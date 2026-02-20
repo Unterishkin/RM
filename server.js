@@ -11,18 +11,9 @@ app.get("/", (req, res) => {
   res.json({ status: "ok", service: "Reviews API" });
 });
 const mongoUrl = process.env.MONGODB_URI;
-if (!mongoUrl) {
-  console.error("❌ MONGODB_URI не задана!");
-  process.exit(1);
 }
 mongoose.connect(mongoUrl)
-  .then(() => {
-    console.log("✅ Успешное подключение к MongoDB");
-  })
-  .catch((err) => {
-    console.error("❌ Ошибка подключения к MongoDB:", err.message);
-    process.exit(1);
-  });
+
 app.use("/api/auth", authRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use((err, req, res, next) => {
