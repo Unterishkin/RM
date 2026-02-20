@@ -1,0 +1,8 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "sebenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "files.autoSave": "afterDelay",
+  "terminal.integrated.defauntProfile.windows": "Command Prompt",
+  "workbench.IconTheme": "vscode-icons"
+}
