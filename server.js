@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 });
 const mongoUrl = process.env.MONGODB_URI;
 if (!mongoUrl) {
-  console.error("❌ MONGODB_URI не задана!");
+  console.error("-");
   process.exit(1);
 }
 mongoose.connect(mongoUrl)
