@@ -10,6 +10,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const mongoUrl = process.env.MONGODB_URI;
+mongoose.connect(mongoUrl)
+  .then(() => console.log("+"))
+  .catch(err => console.error("-", err.message));
 mongoose
   .connect(mongoUrl)
   .then(() => {
