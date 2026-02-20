@@ -5,6 +5,9 @@ const reviewRoutes = require("./rt/reviews");
 const authRoutes = require("./rt/auth");
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`запущен на порту ${PORT}`);
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
