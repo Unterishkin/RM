@@ -5,35 +5,38 @@ const reviewRoutes = require("./rt/reviews");
 const authRoutes = require("./rt/auth");
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`запущен на порту ${PORT}`);
-});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.get("/", (req, res) => {
+  res.json({ status: "ok", service: "Reviews API" });
+});
 const mongoUrl = process.env.MONGODB_URI;
+if (!mongoUrl) {
+  console.error("❌ MONGODB_URI не задана!");
+  process.exit(1);
+}
 mongoose.connect(mongoUrl)
-  .then(() => console.log("+"))
-  .catch(err => console.error("-", err.message));
-mongoose
-  .connect(mongoUrl)
   .then(() => {
-    console.log("Успешное подключение");
+    console.log("+");
   })
   .catch((err) => {
-    console.error("Ошибка подключения");
+    console.error("-:", err.message);
+    process.exit(1);
   });
+
 app.use("/api/auth", authRoutes);
 app.use("/api/reviews", reviewRoutes);
-app.use((err, req, res) => {
+
+app.use((err, req, res, next) => {
   console.error("Ошибка", err);
-  res.status(err.status(500)).json({
+  res.status(err.status || 500).json({
     success: false,
-    message: (err.message = "Внутреняя ошбика"),
+    message: err.message || "Внутренняя ошибка сервера",
     stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
 });
+
 app.listen(PORT, () => {
-  console.log(`http:localhost:${PORT}`);
+  console.log(`🚀 Сервер запущен на порту ${PORT}`);
 });
