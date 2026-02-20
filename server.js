@@ -13,21 +13,19 @@ app.get("/", (req, res) => {
 });
 const mongoUrl = process.env.MONGODB_URI;
 if (!mongoUrl) {
-  console.error("-");
+  console.error("❌ MONGODB_URI не задана!");
   process.exit(1);
 }
 mongoose.connect(mongoUrl)
   .then(() => {
-    console.log("+");
+    console.log("✅ Успешное подключение к MongoDB");
   })
   .catch((err) => {
-    console.error("-:", err.message);
+    console.error("❌ Ошибка подключения к MongoDB:", err.message);
     process.exit(1);
   });
-
 app.use("/api/auth", authRoutes);
 app.use("/api/reviews", reviewRoutes);
-
 app.use((err, req, res, next) => {
   console.error("Ошибка", err);
   res.status(err.status || 500).json({
@@ -36,7 +34,6 @@ app.use((err, req, res, next) => {
     stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
 });
-
 app.listen(PORT, () => {
   console.log(`🚀 Сервер запущен на порту ${PORT}`);
 });
